@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+yt-dlp
+numpy
+demucs>=4.1.0
+imageio-ffmpeg
+pyinstaller

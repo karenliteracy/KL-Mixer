@@ -1,0 +1,69 @@
+{
+  "name": "media-audio-studio",
+  "productName": "Media Audio Studio",
+  "version": "1.0.1",
+  "description": "Local video/audio extraction, AI stem separation, karaoke mixing and pitch control.",
+  "main": "electron/main.js",
+  "author": "Karen Literacy",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis portable --publish never",
+    "dist:mac": "electron-builder --mac dmg zip --publish never",
+    "dist:all": "electron-builder --win nsis portable --mac dmg zip --publish never"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "org.karenliteracy.mediaaudiostudio",
+    "productName": "Media Audio Studio",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "static/**/*",
+      "assets/logo.png",
+      "assets/logo.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/dist",
+        "to": "backend"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/logo.png",
+      "category": "public.app-category.music"
+    }
+  }
+}

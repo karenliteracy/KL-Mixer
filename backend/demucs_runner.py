@@ -1,0 +1,5 @@
+import sys
+from demucs.separate import main
+
+if __name__ == '__main__':
+    main()
