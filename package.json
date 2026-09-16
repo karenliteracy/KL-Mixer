@@ -7,11 +7,12 @@
   "author": "Karen Literacy",
   "license": "MIT",
   "scripts": {
-    "start": "electron .",
-    "dist:win": "electron-builder --win nsis portable --publish never",
-    "dist:mac": "electron-builder --mac dmg zip --publish never",
-    "dist:all": "electron-builder --win nsis portable --mac dmg zip --publish never"
-  },
+  "start": "electron .",
+  "build:backend": "python backend/build_backend.py",
+  "dist:win": "npm run build:backend && electron-builder --win nsis portable --publish never",
+  "dist:mac": "npm run build:backend && electron-builder --mac dmg zip --publish never",
+  "dist:all": "npm run build:backend && electron-builder --win nsis portable --mac dmg zip --publish never"
+},
   "devDependencies": {
     "electron": "^38.0.0",
     "electron-builder": "^26.0.0"
