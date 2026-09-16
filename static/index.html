@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Media Audio Studio V3.1</title><link rel="stylesheet" href="/static/style.css">
+<title>တၢ်ကလုၢ်လဲလိာ်</title><link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<header><div><h1>Media Audio Studio <span>V3.1 AI KARAOKE</span></h1><p>Extract • Separate • Mix • Pitch • Karaoke — all local</p></div><b>● LOCAL</b></header>
+<header><div><h1>တၢ်လဲလိာ်တၢ်ကလုၢ် <span> AI KARAOKE</span></h1><p>ထုးထီၣ်တၢ်ကလုၢ် • နီၤဖးအီၤ • ယီဃုာ်အီၤ • မၤထီၣ်မၤလီၤတၢ်ကလုၢ် • Karaoke — all local</p></div><b>● LOCAL</b></header>
 <main>
-<div class="tabs"><button id="fileTab" class="active">Upload File</button><button id="ytTab">YouTube URL</button></div>
+<div class="tabs"><button id="fileTab" class="active">ဖၢနုာ်လီၤတၢ်ကလုၢ်ဖဲအံၤ</button><button id="ytTab">YouTube URL</button></div>
 
 <section id="uploadBox" class="box center">
-<h2>Drop a video or audio file here</h2><p>Processing stays on this computer.</p>
-<label class="btn">Browse Files<input id="file" type="file" accept="video/*,audio/*" hidden></label><div id="fs"></div>
+<h2>ဖၢနုာ်လီၤတၢ်ဂီၤမူမ့တမ့ၢ်တၢ်ကလုၢ်ဖဲအံၤ</h2><p>Processing stays on this computer.</p>
+<label class="btn">ဖၢနုာ်လီၤတၢ်ကလုၢ်ဖဲအံၤ<input id="file" type="file" accept="video/*,audio/*" hidden></label><div id="fs"></div>
 </section>
 
 <section id="ytBox" class="box center hide">
@@ -23,36 +23,36 @@
 <div class="head"><b>1. Source</b><span id="name"></span></div>
 <video id="video" controls></video>
 <audio id="audio" controls class="hide"></audio>
-<div class="row"><label>Start <input id="start" type="number" min="0" step=".1" value="0"></label><label>End <input id="end" type="number" min="0" step=".1" value="0"></label></div>
+<div class="row"><label>စးထီၣ် <input id="start" type="number" min="0" step=".1" value="0"></label><label>End <input id="end" type="number" min="0" step=".1" value="0"></label></div>
 </section>
 
 <section class="box">
-<div class="head"><b>2. Extract Audio</b><span>Works before AI separation</span></div>
+<div class="head"><b>2. ထုးထီၣ်တၢ်ကလုၢ်တဖၣ်</b><span>ဟံးန့ၢ်အီၤတချုးလၢ AI နီၤဖးလီၤတၢ်ကလုၢ်တဖၣ်</span></div>
 <div class="row">
-<label>Format<select id="format"><option>wav</option><option>mp3</option><option>flac</option><option>m4a</option></select></label>
-<label>Quality<select id="bitrate"><option>128k</option><option>192k</option><option>256k</option><option selected>320k</option></select></label>
+<label>Format(အလုာ်တဖၣ်)<select id="format"><option>wav</option><option>mp3</option><option>flac</option><option>m4a</option></select></label>
+<label>Quality(အကံၢ်အစီ)<select id="bitrate"><option>၁၂၈k</option><option>၁၉၂k</option><option>၂၅၆k</option><option selected>၃၂၀k</option></select></label>
 <label><input id="normExtract" type="checkbox"> Normalize</label>
 </div>
-<button id="extract" class="btn primary">⬇ Extract Audio</button><div id="extractStatus"></div>
+<button id="extract" class="btn primary">⬇ ထုးထီၣ်တၢ်ကလုၢ်</button><div id="extractStatus"></div>
 </section>
 
 <section class="box">
-<div class="head"><b>3. AI Music Separation</b><span id="device"></span></div>
-<p class="small">This is the step that creates independently controllable vocals, drums, bass, and other instruments.</p>
+<div class="head"><b>3. AI နီၤဖးလီၤတၢ်သး၀ံၣ်အကလုၢ်တဖၣ်</b><span id="device"></span></div>
+<p class="small">တၢ်တခါအံၤကနီၤဖးလီၤ၀ဲတၢ်ကလုၢ်အဂၤတဖၣ်ဒ်အမ့ၢ်ပှၤသး၀ံၣ်တၢ်ကလုၢ်, ဒြၢၤ, ဘ့စ်, ဒီးတၢ်ကလုၢ်အဂၤတဖၣ်သးသးန့ၣ်လီၤ.</p>
 <div class="row">
 <label>Model<select id="model"><option value="htdemucs">HTDemucs — recommended</option><option value="htdemucs_ft">HTDemucs FT — slower / quality</option><option value="htdemucs_6s">HTDemucs 6-stem</option></select></label>
 <label>Device<select id="deviceSelect"><option value="auto">Auto</option><option value="cpu">CPU</option><option value="cuda">NVIDIA GPU</option></select></label>
 </div>
-<button id="separate" class="btn primary">🎛 Separate Current Audio</button>
+<button id="separate" class="btn primary">🎛 နီၤဖးလီၤတၢ်ကလုၢ်တဖၣ်</button>
 <div class="progress"><div id="bar"></div></div><div id="sepStatus"></div>
 </section>
 
 <section id="mixer" class="box hide">
 <div class="head"><b>4. Stem Mixer — control BEFORE final export</b><span>0% = mute</span></div>
-<div class="stem"><b>🎤 Vocals <output id="vo">0%</output></b><input id="vocals" type="range" min="0" max="100" value="0"><audio id="avocals" controls></audio></div>
-<div class="stem"><b>🥁 Drums <output id="dr">100%</output></b><input id="drums" type="range" min="0" max="100" value="100"><audio id="adrums" controls></audio></div>
-<div class="stem"><b>🎸 Bass <output id="ba">100%</output></b><input id="bass" type="range" min="0" max="100" value="100"><audio id="abass" controls></audio></div>
-<div class="stem"><b>🎹 Other <output id="ot">100%</output></b><input id="other" type="range" min="0" max="100" value="100"><audio id="aother" controls></audio></div>
+<div class="stem"><b>🎤 Vocals(တၢ်ကလုၢ်) <output id="vo">0%</output></b><input id="vocals" type="range" min="0" max="100" value="0"><audio id="avocals" controls></audio></div>
+<div class="stem"><b>🥁 Drums (ဒြၢၤ) <output id="dr">100%</output></b><input id="drums" type="range" min="0" max="100" value="100"><audio id="adrums" controls></audio></div>
+<div class="stem"><b>🎸 Bass (ဘ့စ်)<output id="ba">100%</output></b><input id="bass" type="range" min="0" max="100" value="100"><audio id="abass" controls></audio></div>
+<div class="stem"><b>🎹 Other (အဂၤတဖၣ်) <output id="ot">100%</output></b><input id="other" type="range" min="0" max="100" value="100"><audio id="aother" controls></audio></div>
 </section>
 
 <section id="export" class="box hide">
