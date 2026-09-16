@@ -6,54 +6,149 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   windows:
+    name: Build Windows Installer and Portable EXE
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v6
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: '22'
+
       - name: Install Python dependencies
+        shell: pwsh
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r backend/requirements-build.txt
-      - name: Build Python backend
-        run: python backend/build_backend.py
+
       - name: Install Electron dependencies
         run: npm install
+
+      - name: Build Python audio engine
+        run: python backend/build_backend.py
+
+      - name: Verify Python audio engine
+        shell: pwsh
+        run: |
+          Write-Host "========================================"
+          Write-Host "Checking Python backend build..."
+          Write-Host "========================================"
+
+          if (Test-Path "backend/dist") {
+            Write-Host "backend/dist exists."
+            Get-ChildItem -Recurse "backend/dist"
+          } else {
+            Write-Error "ERROR: backend/dist was not created."
+            exit 1
+          }
+
       - name: Build Windows installer and portable EXE
         run: npm run dist:win
-      - uses: actions/upload-artifact@v4
+
+      - name: Verify Electron package
+        shell: pwsh
+        run: |
+          Write-Host "========================================"
+          Write-Host "Checking Electron build output..."
+          Write-Host "========================================"
+
+          if (Test-Path "dist") {
+            Get-ChildItem -Recurse "dist"
+          } else {
+            Write-Error "ERROR: Electron dist folder was not created."
+            exit 1
+          }
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: Media-Audio-Studio-Windows
-          path: dist/*
+          path: |
+            dist/*.exe
+            dist/*.blockmap
+            dist/*.yml
+          if-no-files-found: error
+
 
   macos:
+    name: Build macOS DMG and ZIP
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v6
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - uses: actions/setup-node@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r backend/requirements-build.txt
-      - name: Build Python backend
-        run: python backend/build_backend.py
+
       - name: Install Electron dependencies
         run: npm install
-      - name: Build macOS app
+
+      - name: Build Python audio engine
+        run: python backend/build_backend.py
+
+      - name: Verify Python audio engine
+        run: |
+          echo "========================================"
+          echo "Checking Python backend build..."
+          echo "========================================"
+
+          if [ -d "backend/dist" ]; then
+            echo "backend/dist exists."
+            find backend/dist -maxdepth 3 -type f -print
+          else
+            echo "ERROR: backend/dist was not created."
+            exit 1
+          fi
+
+      - name: Build macOS application
         run: npm run dist:mac
-      - uses: actions/upload-artifact@v4
+
+      - name: Verify Electron package
+        run: |
+          echo "========================================"
+          echo "Checking Electron build output..."
+          echo "========================================"
+
+          if [ -d "dist" ]; then
+            find dist -maxdepth 3 -type f -print
+          else
+            echo "ERROR: Electron dist folder was not created."
+            exit 1
+          fi
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: Media-Audio-Studio-macOS
-          path: dist/*
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.blockmap
+            dist/*.yml
+          if-no-files-found: error
